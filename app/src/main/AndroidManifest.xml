@@ -11,12 +11,12 @@
         android:roundIcon="@mipmap/ic_launcher_nongkiyuk_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
-        <activity android:name=".MainActivity"></activity>
+        <activity android:name=".activities.Main.MainActivity"></activity>
         <activity
-            android:name=".LoginActivity"
+            android:name=".activities.Login.LoginActivity"
             android:theme="@style/AppTheme.Dark"></activity>
         <activity
-            android:name=".SignupActivity"
+            android:name=".activities.SignUp.SignupActivity"
             android:theme="@style/AppTheme.Dark">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

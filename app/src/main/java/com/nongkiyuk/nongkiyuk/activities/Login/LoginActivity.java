@@ -1,4 +1,4 @@
-package com.nongkiyuk.nongkiyuk;
+package com.nongkiyuk.nongkiyuk.activities.Login;
 
 import android.app.ProgressDialog;
 import android.content.Intent;
@@ -12,6 +12,9 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
+
+import com.nongkiyuk.nongkiyuk.R;
+import com.nongkiyuk.nongkiyuk.activities.SignUp.SignupActivity;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
