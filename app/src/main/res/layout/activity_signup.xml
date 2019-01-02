@@ -17,6 +17,13 @@
         android:focusable="true"
         android:focusableInTouchMode="true">
 
+        <ImageView
+            android:src="@drawable/nongkiyuk_logo"
+            android:layout_width="wrap_content"
+            android:layout_height="72dp"
+            android:layout_marginBottom="24dp"
+            android:layout_gravity="center_horizontal"/>
+
         <!-- Name Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
@@ -27,20 +34,21 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPersonName"
-                android:hint="Name" />
+                android:hint="Name"/>
         </android.support.design.widget.TextInputLayout>
 
-        <!-- Address Label -->
+        <!-- Username Label -->
         <android.support.design.widget.TextInputLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="8dp"
             android:layout_marginBottom="8dp">
-            <EditText android:id="@+id/input_address"
+            <EditText
+                android:id="@+id/input_username"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:inputType="textPostalAddress"
-                android:hint="Address" />
+                android:inputType="text"
+                android:hint="Username" />
         </android.support.design.widget.TextInputLayout>
 
         <!--  Email Label -->
@@ -53,7 +61,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textEmailAddress"
-                android:hint="Email" />
+                android:hint="E-mail" />
         </android.support.design.widget.TextInputLayout>
 
         <!-- Password Label -->
@@ -79,7 +87,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:inputType="textPassword"
-                android:hint="Re-enter Password"/>
+                android:hint="Ketik Ulang Password"/>
         </android.support.design.widget.TextInputLayout>
 
         <!-- Signup Button -->
@@ -90,15 +98,17 @@
             android:layout_marginTop="24dp"
             android:layout_marginBottom="24dp"
             android:padding="12dp"
-            android:text="Create Account"/>
+            android:text="Daftar"/>
 
-        <TextView android:id="@+id/link_login"
+        <TextView
+            android:id="@+id/link_login"
             android:layout_width="fill_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="24dp"
-            android:text="Already a member? Login"
+            android:text="Sudah punya akun? Silahkan masuk"
             android:gravity="center"
-            android:textSize="16dip"/>
+            android:textSize="16dip"
+            android:textColor="@color/primary_dark"/>
 
     </LinearLayout>
 

@@ -18,7 +18,7 @@ public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
 
     @BindView(R.id.input_name) EditText _nameText;
-    @BindView(R.id.input_address) EditText _addressText;
+    @BindView(R.id.input_username) EditText _usernameText;
     @BindView(R.id.input_email) EditText _emailText;
     @BindView(R.id.input_password) EditText _passwordText;
     @BindView(R.id.input_reEnterPassword) EditText _reEnterPasswordText;
@@ -66,7 +66,7 @@ public class SignupActivity extends AppCompatActivity {
         progressDialog.show();
 
         String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
+        String username = _usernameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
@@ -102,7 +102,7 @@ public class SignupActivity extends AppCompatActivity {
         boolean valid = true;
 
         String name = _nameText.getText().toString();
-        String address = _addressText.getText().toString();
+        String username = _usernameText.getText().toString();
         String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
@@ -114,11 +114,11 @@ public class SignupActivity extends AppCompatActivity {
             _nameText.setError(null);
         }
 
-        if (address.isEmpty()) {
-            _addressText.setError("Enter Valid Address");
+        if (username.isEmpty()) {
+            _usernameText.setError("Enter Valid Username");
             valid = false;
         } else {
-            _addressText.setError(null);
+            _usernameText.setError(null);
         }
 
 
