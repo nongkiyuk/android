@@ -72,6 +72,13 @@ public class LoginActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+
+        // Jika session LoggedIn (sudah login) sama dengan TRUE maka akan memulai MainActivity
+        if (sharedPrefManager.getSPLoggedIn()) {
+            startActivity(new Intent(LoginActivity.this, MainActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+        }
     }
 
     public void login() {
@@ -93,7 +100,6 @@ public class LoginActivity extends AppCompatActivity {
         String username = _usernameText.getText().toString();
         String password = _passwordText.getText().toString();
 
-        // TODO: Implement your own authentication logic here.
         mApiInterface.loginRequest(username, password)
                 .enqueue(new Callback<ResponseBody>() {
                     @Override
@@ -102,12 +108,12 @@ public class LoginActivity extends AppCompatActivity {
                         if (response.isSuccessful()) {
                             try {
                                 JSONObject jsonRESULTS = new JSONObject(response.body().string());
-                                // Log.d("JSON LOGIN", jsonRESULTS.toString());
-                                // Log.d("RESPONSE CODE : ", String.valueOf(response.code()));
                                 String access_token = jsonRESULTS.getJSONObject("data").getString("access_token");
-                                Log.d(TAG, String.valueOf(response.code()));
-                                Toast.makeText(LoginActivity.this, "login berhasil", Toast.LENGTH_SHORT).show();
+                                String token_type = jsonRESULTS.getJSONObject("data").getString("token_type");
+                                String expires_at = jsonRESULTS.getJSONObject("data").getString("expires_at");
 
+                                sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
+                                onLoginSuccess();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
@@ -120,21 +126,11 @@ public class LoginActivity extends AppCompatActivity {
 
                     @Override
                     public void onFailure(Call<ResponseBody> call, Throwable t) {
-
+                        progressDialog.dismiss();
+                        Log.e("debug", "onFailure: ERROR > " + t.toString());
+                        onLoginFailed();
                     }
                 });
-
-//        new android.os.Handler().postDelayed(
-//                new Runnable() {
-//                    @Override
-//                    public void run() {
-//                        progressDialog.dismiss();
-//                        // On complete call either onLoginSuccess or onLoginFailed
-//                        onLoginSuccess();
-//                        // onLoginFailed();
-//                    }
-//                }, 3000
-//        );
     }
 
     @Override
@@ -156,8 +152,9 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
-        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
-        startActivity(intent);
+        Toast.makeText(LoginActivity.this, "login berhasil", Toast.LENGTH_SHORT).show();
+        startActivity(new Intent(mContext, MainActivity.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
         finish();
     }
 

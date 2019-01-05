@@ -11,18 +11,19 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import com.google.firebase.iid.FirebaseInstanceId;
 import com.google.firebase.messaging.FirebaseMessaging;
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Login.LoginActivity;
-import com.nongkiyuk.nongkiyuk.network.FirebaseClientIdService;
-import com.nongkiyuk.nongkiyuk.network.FirebaseMessagingClientService;
+import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
+import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
+
+    SharedPrefManager sharedPrefManager;
 
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_username) EditText _usernameText;
@@ -36,9 +37,10 @@ public class SignupActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_signup);
-        ButterKnife.bind(this);
 
-        FirebaseMessaging.getInstance().subscribeToTopic("broadcast");
+        ButterKnife.bind(this);
+        sharedPrefManager = new SharedPrefManager(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("news");
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -56,6 +58,13 @@ public class SignupActivity extends AppCompatActivity {
                 overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
             }
         });
+
+        // Jika session LoggedIn (sudah login) sama dengan TRUE maka akan memulai MainActivity
+        if (sharedPrefManager.getSPLoggedIn()) {
+            startActivity(new Intent(SignupActivity.this, MainActivity.class)
+                    .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+            finish();
+        }
     }
 
     public void signup() {

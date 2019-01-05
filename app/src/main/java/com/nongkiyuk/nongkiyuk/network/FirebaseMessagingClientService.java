@@ -17,5 +17,6 @@ public class FirebaseMessagingClientService extends FirebaseMessagingService {
     public void onMessageReceived(RemoteMessage remoteMessage) {
         Log.d(TAG, "From: " + remoteMessage.getFrom());
         Log.d(TAG, "Notification Message Body: ");
+        // TODO: Make a Notification if Recive a Notification From FCM
     }
 }
