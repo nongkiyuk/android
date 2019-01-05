@@ -2,8 +2,10 @@ package com.nongkiyuk.nongkiyuk.activities.Login;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.support.annotation.Nullable;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -120,7 +122,21 @@ public class LoginActivity extends AppCompatActivity {
                                 e.printStackTrace();
                             }
                         } else {
-                            Toast.makeText(LoginActivity.this, "Login gagal", Toast.LENGTH_SHORT).show();
+                            _loginButton.setEnabled(true);
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                Log.d("RESPONSE CODE", String.valueOf(response.code()));
+                                String msg = jsonObject.getJSONObject("data").getString("msg");
+                                if (response.code() == 401) {
+                                    dialogFailedLogin();
+                                } else {
+                                    Toast.makeText(LoginActivity.this, msg, Toast.LENGTH_SHORT).show();
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
                         }
                     }
 
@@ -138,6 +154,7 @@ public class LoginActivity extends AppCompatActivity {
         if (requestCode == REQUEST_SIGNUP) {
             if (resultCode == RESULT_OK) {
                 // TODO: Implement successful signup logic here.
+                Toast.makeText(LoginActivity.this, "Silahkan Login untuk memulai", Toast.LENGTH_SHORT).show();
                 // By default we just finish the Activity and log them in automatically
                 this.finish();
             }
@@ -159,9 +176,20 @@ public class LoginActivity extends AppCompatActivity {
     }
 
     public void onLoginFailed() {
-        Toast.makeText(getBaseContext(), "Login failed", Toast.LENGTH_LONG).show();
-
         _loginButton.setEnabled(true);
+    }
+
+    public void dialogFailedLogin() {
+        final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Light_Dialog);
+        builder.setMessage("Username atau password yang Anda masukan salah. Silahkan coba lagi.")
+                .setPositiveButton("COBA LAGI", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialog, int which) {
+                        dialog.dismiss();
+                    }
+                });
+        AlertDialog alertDialog = builder.create();
+        alertDialog.show();
     }
 
     public boolean validate() {

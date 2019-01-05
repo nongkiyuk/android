@@ -1,6 +1,7 @@
 package com.nongkiyuk.nongkiyuk.activities.SignUp;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
@@ -14,15 +15,28 @@ import android.widget.Toast;
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Login.LoginActivity;
 import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
+import com.nongkiyuk.nongkiyuk.network.ApiInterface;
 import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
+import com.nongkiyuk.nongkiyuk.utils.UtilsApi;
+
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class SignupActivity extends AppCompatActivity {
     private static final String TAG = "SignUpActivity";
 
     SharedPrefManager sharedPrefManager;
+    Context mContext;
+    ApiInterface mApiInterface;
 
     @BindView(R.id.input_name) EditText _nameText;
     @BindView(R.id.input_username) EditText _usernameText;
@@ -38,6 +52,8 @@ public class SignupActivity extends AppCompatActivity {
         setContentView(R.layout.activity_signup);
 
         ButterKnife.bind(this);
+        mContext = this;
+        mApiInterface = UtilsApi.getApiInterface(); // init UtilsApi
         sharedPrefManager = new SharedPrefManager(this);
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
@@ -87,30 +103,57 @@ public class SignupActivity extends AppCompatActivity {
         String password = _passwordText.getText().toString();
         String reEnterPassword = _reEnterPasswordText.getText().toString();
 
-        // TODO: Implement your own signup logic here.
-
-        new android.os.Handler().postDelayed(
-                new Runnable() {
-                    public void run() {
-                        // On complete call either onSignUpSuccess or onSignUpFailed
-                        // depending on success
-                        onSignUpSuccess();
-                        // onSignUpFailed();
-                        progressDialog.dismiss();
+        mApiInterface.registerRequest(name, email, username, password)
+                .enqueue(new Callback<ResponseBody>() {
+                    @Override
+                    public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                        if (response.isSuccessful()) {
+                            Log.i(TAG, "onResponse: SUCCESS");
+                            progressDialog.dismiss();
+                            try {
+                                 JSONObject jsonObject = new JSONObject(response.body().string());
+                                 Log.d(TAG, String.valueOf(jsonObject));
+                                 Toast.makeText(mContext, "DAFTAR BERHASIL", Toast.LENGTH_SHORT).show();
+                                 onSignUpSuccess();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        } else {
+                            progressDialog.dismiss();
+                            onSignUpFailed();
+                            try {
+                                JSONObject jsonObject = new JSONObject(response.errorBody().string());
+                                String msg = jsonObject.getJSONObject("data").getString("msg");
+                                Log.i(TAG, "ERROR: " + msg);
+                                Toast.makeText(mContext, msg, Toast.LENGTH_LONG).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            } catch (IOException e) {
+                                e.printStackTrace();
+                            }
+                        }
                     }
-                }, 3000);
 
+                    @Override
+                    public void onFailure(Call<ResponseBody> call, Throwable t) {
+                        Log.e("debug", "onFailure: ERROR > " + t.getMessage());
+                        Toast.makeText(mContext, "Koneksi Internet Bermasalah", Toast.LENGTH_SHORT).show();
+                    }
+                });
     }
 
     public void onSignUpSuccess() {
         _signupButton.setEnabled(true);
         setResult(RESULT_OK, null);
         finish();
+        Intent loginIntent = new Intent(SignupActivity.this, LoginActivity.class);
+        startActivityForResult(loginIntent, 1);
     }
 
     public void onSignUpFailed() {
-        Toast.makeText(getBaseContext(), "Sign Up failed", Toast.LENGTH_LONG).show();
-
+        Log.i("debug", "onResponse: GAGAL");
         _signupButton.setEnabled(true);
     }
 
