@@ -40,7 +40,7 @@ public class SignupActivity extends AppCompatActivity {
 
         ButterKnife.bind(this);
         sharedPrefManager = new SharedPrefManager(this);
-        FirebaseMessaging.getInstance().subscribeToTopic("news");
+        FirebaseMessaging.getInstance().subscribeToTopic("broadcast");
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
