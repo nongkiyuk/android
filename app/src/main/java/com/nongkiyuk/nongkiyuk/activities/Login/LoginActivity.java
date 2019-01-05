@@ -14,6 +14,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nongkiyuk.nongkiyuk.R;
+import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
 import com.nongkiyuk.nongkiyuk.activities.SignUp.SignupActivity;
 
 import butterknife.BindView;
@@ -78,10 +79,10 @@ public class LoginActivity extends AppCompatActivity {
                 new Runnable() {
                     @Override
                     public void run() {
+                        progressDialog.dismiss();
                         // On complete call either onLoginSuccess or onLoginFailed
                         onLoginSuccess();
                         // onLoginFailed();
-                        progressDialog.dismiss();
                     }
                 }, 3000
         );
@@ -106,6 +107,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void onLoginSuccess() {
         _loginButton.setEnabled(true);
+        Intent intent = new Intent(getApplicationContext(), MainActivity.class);
+        startActivity(intent);
         finish();
     }
 
