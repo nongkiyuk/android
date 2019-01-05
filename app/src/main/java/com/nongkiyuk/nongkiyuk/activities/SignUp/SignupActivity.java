@@ -12,6 +12,7 @@ import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.messaging.FirebaseMessaging;
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Login.LoginActivity;
 import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
@@ -55,6 +56,7 @@ public class SignupActivity extends AppCompatActivity {
         mContext = this;
         mApiInterface = UtilsApi.getApiInterface(); // init UtilsApi
         sharedPrefManager = new SharedPrefManager(this);
+        FirebaseMessaging.getInstance().subscribeToTopic("broadcast");
 
         _signupButton.setOnClickListener(new View.OnClickListener() {
             @Override
