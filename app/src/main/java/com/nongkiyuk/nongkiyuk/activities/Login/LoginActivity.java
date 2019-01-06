@@ -115,6 +115,7 @@ public class LoginActivity extends AppCompatActivity {
                                 String expires_at = jsonRESULTS.getJSONObject("data").getString("expires_at");
 
                                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
+                                sharedPrefManager.saveSPString("API_KEY", token_type + " " + access_token);
                                 onLoginSuccess();
                             } catch (JSONException e) {
                                 e.printStackTrace();

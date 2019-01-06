@@ -46,4 +46,8 @@ public class SharedPrefManager {
     public Boolean getSPLoggedIn() {
         return sp.getBoolean(SP_LOGGED_IN, false);
     }
+
+    public String getSpString(String key){
+        return sp.getString(key, "");
+    }
 }
