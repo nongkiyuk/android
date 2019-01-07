@@ -5,10 +5,12 @@ import android.app.ProgressDialog;
 import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -32,6 +34,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -48,6 +52,9 @@ public class FavoriteFragment extends Fragment {
     private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static RecyclerView mRecyclerView;
+
+    @BindView(R.id.toolbarId)
+    Toolbar toolbar;
 
     public FavoriteFragment() {
         // Required empty public constructor
@@ -69,8 +76,12 @@ public class FavoriteFragment extends Fragment {
         mAdapter = new FavoriteAdapter(getContext(), places);
         mRecyclerView.setAdapter(mAdapter);
 
+        ButterKnife.bind(this, view);
         mApiInterface = UtilsApi.getApiInterface();
         db = new SQLiteHandler(getContext());
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         HashMap<String, String> user = db.getUserDetails();
         String access_token = user.get("access_token");
