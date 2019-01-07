@@ -8,8 +8,13 @@
 
 <item
     android:id="@+id/navigation_fav"
+<<<<<<< HEAD
     android:icon="@drawable/ic_favorite_border_black_24dp_fav_empty"
     android:title="@string/favorites" />
+=======
+    android:icon="@drawable/ic_favorite_black_24dp_fav"
+    android:title="@string/favorite" />
+>>>>>>> b385524b8dc253438cf4558f14ca913f31797878
 
 <item
     android:id="@+id/navigation_share"

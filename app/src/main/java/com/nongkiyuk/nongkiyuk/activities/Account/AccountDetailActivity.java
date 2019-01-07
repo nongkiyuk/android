@@ -74,7 +74,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         final String token_type = user.get("token_type");
 
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Edit Profile");
+        getSupportActionBar().setTitle(R.string.button_change_account);
 
         setFormProfile(token_type, access_token);
 
@@ -138,7 +138,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(AccountDetailActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Simpan Profile...");
+        progressDialog.setMessage(getString(R.string.label_save_profile) + "...");
         progressDialog.show();
 
         String name = _nameText.getText().toString();

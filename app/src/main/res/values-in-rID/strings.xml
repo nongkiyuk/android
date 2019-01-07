@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string name="app_name">NongkiYuk</string>
+
+    <string name="home">Beranda</string>
+    <string name="favorite">Favorit</string>
+    <string name="account">Akun</string>
+    <string name="maps">Buka Map</string>
+    <string name="share">Bagikan</string>
+
+    <string name="button_register">Daftar</string>
+    <string name="button_login">Masuk</string>
+    <string name="button_save">Simpan</string>
+    <string name="button_logout">Keluar</string>
+    <string name="button_change_language">Ubah Bahasa</string>
+    <string name="button_change_account">Ubah Profil</string>
+
+    <string name="label_name">Nama</string>
+    <string name="label_reenter_password">Ketik Ulang Password</string>
+    <string name="help_text_password">Biarkan jika tidak diubah.</string>
+    <string name="link_register">Belum punya akun? Daftar Sekarang</string>
+    <string name="link_login">Sudah punya akun? Silahkan masuk</string>
+    <string name="label_yes">Ya</string>
+    <string name="label_no">Tidak</string>
+    <string name="content_area_logout">Apakah kamu yakin ingin keluar ?</string>
+    <string name="label_creating_content">Membuat akun</string>
+    <string name="label_authenticating">Otentikasi</string>
+    <string name="label_save_profile">Simpan profil</string>
+    <string name="label_incorrect_authentication">Username atau password yang Anda masukan salah. Silahkan coba lagi.</string>
+    <string name="label_try_again">Coba lagi</string>
+
+    <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
+    <string name="default_notification_channel_name">broadcast</string>
+</resources>
