@@ -101,7 +101,7 @@ public class LoginActivity extends AppCompatActivity {
         final ProgressDialog progressDialog = new ProgressDialog(LoginActivity.this,
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Authenticating...");
+        progressDialog.setMessage(getString(R.string.label_authenticating) + "...");
         progressDialog.show();
 
         String username = _usernameText.getText().toString();
@@ -190,8 +190,8 @@ public class LoginActivity extends AppCompatActivity {
 
     public void dialogFailedLogin() {
         final AlertDialog.Builder builder = new AlertDialog.Builder(this, R.style.AppTheme_Light_Dialog);
-        builder.setMessage("Username atau password yang Anda masukan salah. Silahkan coba lagi.")
-                .setPositiveButton("COBA LAGI", new DialogInterface.OnClickListener() {
+        builder.setMessage(getString(R.string.label_incorrect_authentication))
+                .setPositiveButton(getString(R.string.label_try_again), new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialog, int which) {
                         dialog.dismiss();

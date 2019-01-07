@@ -11,6 +11,7 @@ import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
@@ -75,6 +76,8 @@ public class AccountFragment extends Fragment {
     Button _editButton;
     @BindView(R.id.btn_logout)
     Button _logoutButton;
+    @BindView(R.id.btn_language)
+    Button _languageButton;
 
     Context mContext;
     ApiInterface mApiInterface;
@@ -118,8 +121,8 @@ public class AccountFragment extends Fragment {
             @Override
             public void onClick(View v) {
                 AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppTheme_Light_Dialog);
-                builder.setMessage("Apakah kamu yakin ingin keluar ?")
-                        .setPositiveButton("YA", new DialogInterface.OnClickListener() {
+                builder.setMessage(R.string.content_area_logout)
+                        .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d(TAG, "OK DITEKAN");
@@ -133,7 +136,7 @@ public class AccountFragment extends Fragment {
                                 ((Activity) getActivity()).overridePendingTransition(0,0);
                             }
                         })
-                        .setNegativeButton("TIDAK", new DialogInterface.OnClickListener() {
+                        .setNegativeButton(R.string.label_no, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
                                 Log.d(TAG, "TIDAK DITEKAN");
@@ -170,6 +173,14 @@ public class AccountFragment extends Fragment {
                     Intent i = new Intent(Intent.ACTION_PICK, MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
                     startActivityForResult(i, REQUEST_GALLERY_CODE);
                 }
+            }
+        });
+
+        _languageButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                startActivity(intent);
             }
         });
 

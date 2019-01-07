@@ -14,7 +14,7 @@
         <TextView
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Favorite"
+            android:text="@string/favorite"
             android:textStyle="bold"
             android:textColor="@color/black"
             android:layout_gravity="center"

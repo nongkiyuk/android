@@ -73,7 +73,7 @@
 
             <Button
                 android:id="@+id/btn_edit"
-                android:text="UBAH PROFILE"
+                android:text="@string/button_change_account"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -87,7 +87,7 @@
 
             <Button
                 android:id="@+id/btn_language"
-                android:text="UBAH BAHASA"
+                android:text="@string/button_change_language"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -103,7 +103,7 @@
 
         <Button
             android:id="@+id/btn_logout"
-            android:text="Keluar"
+            android:text="@string/button_logout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content" />
 
