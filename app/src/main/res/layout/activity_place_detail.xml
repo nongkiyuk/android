@@ -4,7 +4,7 @@
     android:layout_height="match_parent"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.Home.PlaceDetail">
-
+    
     <ImageView
         android:id="@+id/coverImg"
         android:layout_width="match_parent"
@@ -13,9 +13,9 @@
         android:paddingTop="20dp"/>
 
     <TextView
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/name"
         android:layout_below="@+id/coverImg"
         android:layout_alignParentStart="true"
         android:layout_gravity="center_vertical"
@@ -24,9 +24,9 @@
         android:textSize="50dp"/>
 
     <TextView
+        android:id="@+id/desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/desc"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="142dp"

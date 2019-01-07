@@ -1,13 +1,9 @@
 package com.nongkiyuk.nongkiyuk.activities.Home;
 
 
-import android.app.Activity;
 import android.app.ProgressDialog;
-import android.content.Context;
-import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -15,22 +11,14 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.AdapterView;
-import android.widget.BaseAdapter;
-import android.widget.GridView;
-import android.widget.ImageView;
-import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nongkiyuk.nongkiyuk.R;
-import com.nongkiyuk.nongkiyuk.activities.Favorite.Adapters.FavoriteAdapter;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Models.Place;
-import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
+import com.nongkiyuk.nongkiyuk.activities.Home.Adapters.HomeAdapter;
 import com.nongkiyuk.nongkiyuk.network.ApiInterface;
 import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
-import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
 import com.nongkiyuk.nongkiyuk.utils.UtilsApi;
-import com.squareup.picasso.Picasso;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -75,7 +63,7 @@ public class HomeFragment extends Fragment {
         mRecyclerView.setLayoutManager(mLayoutManager);
         mRecyclerView.setItemAnimator(new DefaultItemAnimator());
 
-        mAdapter = new FavoriteAdapter(getContext(), places);
+        mAdapter = new HomeAdapter(getContext(), places);
         mRecyclerView.setAdapter(mAdapter);
 
         mApiInterface = UtilsApi.getApiInterface();
@@ -115,7 +103,7 @@ public class HomeFragment extends Fragment {
                                         place.getString("description"), place.getString("latitude"),
                                         place.getString("longitude"), cover.getString("url")));
                             }
-                            mAdapter = new FavoriteAdapter(getContext(), places);
+                            mAdapter = new HomeAdapter(getContext(), places);
                             mRecyclerView.swapAdapter(mAdapter, true);
                         }
                     } catch (JSONException e) {
@@ -133,9 +121,6 @@ public class HomeFragment extends Fragment {
                 Toast.makeText(getActivity(), "Something went wrongs", Toast.LENGTH_LONG).show();
             }
         });
-
-
-
 
         return view;
     }

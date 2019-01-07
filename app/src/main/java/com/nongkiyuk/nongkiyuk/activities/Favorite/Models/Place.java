@@ -1,8 +1,9 @@
 package com.nongkiyuk.nongkiyuk.activities.Favorite.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Place {
+public class Place implements Serializable {
     String id;
     String name;
     String description;
