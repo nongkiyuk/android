@@ -1,5 +1,6 @@
 package com.nongkiyuk.nongkiyuk.activities.Home;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Parcelable;
@@ -12,10 +13,12 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.nongkiyuk.nongkiyuk.R;
@@ -24,29 +27,56 @@ import com.nongkiyuk.nongkiyuk.activities.Favorite.FavoriteFragment;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Models.Place;
 import com.nongkiyuk.nongkiyuk.activities.Home.Adapters.HomeAdapter;
 import com.nongkiyuk.nongkiyuk.activities.Home.Adapters.ImageAdapter;
+import com.nongkiyuk.nongkiyuk.network.ApiInterface;
+import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
+import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
+import com.nongkiyuk.nongkiyuk.utils.UtilsApi;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
+
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaceDetail extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
-    BottomNavigationView bottomNavigationView;
-    TextView txtName;
-    TextView txtAddress;
-    TextView txtDescription;
-    LinearLayout sliderDotspanel;
-    int dotscount;
-    ImageView[] dots;
-    Place place;
+    private ApiInterface mApiInterface;
+    private SQLiteHandler db;
+    private BottomNavigationView bottomNavigationView;
+    private TextView txtName;
+    private TextView txtAddress;
+    private TextView txtDescription;
+    private LinearLayout sliderDotspanel;
+    private int dotscount;
+    private ImageView[] dots;
+    private Place place;
+    private String token;
+    private Menu menu;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_detail);
 
+        mApiInterface = UtilsApi.getApiInterface();
+        db = new SQLiteHandler(getApplicationContext());
 
+        HashMap<String, String> user = db.getUserDetails();
+        String access_token = user.get("access_token");
+        String token_type = user.get("token_type");
+        token = token_type + " " + access_token;
 
         bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
+
+        menu = bottomNavigationView.getMenu();
 
         Intent intent = getIntent();
         place = (Place) intent.getSerializableExtra("place");
@@ -139,6 +169,26 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
 
     private void loveIt()
     {
+        mApiInterface.sendFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                        String msg = jsonRESULTS.getJSONObject("data").getString("msg");
+                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
 
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
+            }
+        });
     }
 }
