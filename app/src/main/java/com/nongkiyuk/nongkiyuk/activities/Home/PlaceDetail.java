@@ -2,23 +2,32 @@ package com.nongkiyuk.nongkiyuk.activities.Home;
 
 import android.content.Intent;
 import android.os.Parcelable;
+import android.support.annotation.NonNull;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
 import android.support.v4.view.ViewPager;
+import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toolbar;
 
 import com.nongkiyuk.nongkiyuk.R;
+import com.nongkiyuk.nongkiyuk.activities.Account.AccountFragment;
+import com.nongkiyuk.nongkiyuk.activities.Favorite.FavoriteFragment;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Models.Place;
 import com.nongkiyuk.nongkiyuk.activities.Home.Adapters.HomeAdapter;
 import com.nongkiyuk.nongkiyuk.activities.Home.Adapters.ImageAdapter;
 
 import java.io.Serializable;
 
-public class PlaceDetail extends AppCompatActivity {
+public class PlaceDetail extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
+    BottomNavigationView bottomNavigationView;
     TextView txtName;
     TextView txtDescription;
     LinearLayout sliderDotspanel;
@@ -29,6 +38,11 @@ public class PlaceDetail extends AppCompatActivity {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_detail);
+
+
+
+        bottomNavigationView = findViewById(R.id.navigation);
+        bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
         Place place = (Place) intent.getSerializableExtra("place");
@@ -80,5 +94,18 @@ public class PlaceDetail extends AppCompatActivity {
         txtName.setText(place.getName());
         txtDescription.setText("Tayo");
 
+    }
+
+    @Override
+    public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
+        switch (menuItem.getItemId()) {
+            case R.id.navigation_map:
+                break;
+            case R.id.navigation_share:
+                break;
+            case R.id.navigation_fav:
+                break;
+        }
+        return true;
     }
 }
