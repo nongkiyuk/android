@@ -28,7 +28,14 @@
     <string name="label_save_profile">Save profile</string>
     <string name="label_incorrect_authentication">The username or password you entered is incorrect. Please try again.</string>
     <string name="label_try_again">Try again</string>
+    <string name="msg_success_add_favorite">Success Add Place To Favorites</string>
+    <string name="msg_success_remove_favorite">Success Remove Place From Favorites</string>
+    <string name="somthing_went_wrong">Something Went Wrong</string>
+    <string name="loading">Loading...</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="default_notification_channel_name">broadcast</string>
+
+
+
 </resources>

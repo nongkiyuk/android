@@ -82,7 +82,7 @@ public class HomeFragment extends Fragment {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         mApiInterface.getPlaces().enqueue(new Callback<ResponseBody>() {

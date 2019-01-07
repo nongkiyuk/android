@@ -188,7 +188,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
                             String msg = jsonRESULTS.getJSONObject("data").getString("msg");
                             menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
                             favorite = true;
-                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.msg_success_add_favorite), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -199,7 +199,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.somthing_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             });
         }else{
@@ -213,7 +213,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
                             String msg = jsonRESULTS.getJSONObject("data").getString("msg");
                             menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_border_black_24dp_fav_empty);
                             favorite = false;
-                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                            Toast.makeText(getApplicationContext(), getString(R.string.msg_success_remove_favorite), Toast.LENGTH_SHORT).show();
                         } catch (JSONException e) {
                             e.printStackTrace();
                         } catch (IOException e) {
@@ -224,7 +224,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
 
                 @Override
                 public void onFailure(Call<ResponseBody> call, Throwable t) {
-                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getApplicationContext(), getString(R.string.somthing_went_wrong), Toast.LENGTH_SHORT).show();
                 }
             });
         }

@@ -91,7 +91,7 @@ public class FavoriteFragment extends Fragment {
         final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
                 R.style.AppTheme_Dark_Dialog);
         progressDialog.setIndeterminate(true);
-        progressDialog.setMessage("Fetching...");
+        progressDialog.setMessage(getString(R.string.loading));
         progressDialog.show();
 
         mApiInterface.getFavoritePlaces(token).enqueue(new Callback<ResponseBody>() {
