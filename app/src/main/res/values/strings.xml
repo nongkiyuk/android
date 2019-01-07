@@ -6,7 +6,7 @@
     <string name="account">Account</string>
     <string name="maps">Open Maps</string>
     <string name="share">Share</string>
-    <string name="favorites">My Favorite</string>
+    <string name="favorites">Favorite</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
