@@ -35,5 +35,5 @@ public interface ApiInterface {
                                           @Field("password") String password);
 
     @GET("places/favorite")
-    Call<ResponseBody> getFavoritePlaces(@Header("Authorization") String key);
+    Call<ResponseBody> getFavoritePlaces(@Header("Authorization") String token);
 }
