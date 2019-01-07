@@ -46,7 +46,7 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
         itemPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, places.get(i).getDescription(), Toast.LENGTH_LONG).show();
+                //Toast.makeText(mContext, places.get(i).getDescription(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(mContext, PlaceDetail.class);
                 intent.putExtra("place", places.get(i));
                 mContext.startActivity(intent);

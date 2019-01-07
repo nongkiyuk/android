@@ -1,6 +1,7 @@
 package com.nongkiyuk.nongkiyuk.activities.Favorite.Adapters;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -13,6 +14,7 @@ import android.widget.Toast;
 
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Models.Place;
+import com.nongkiyuk.nongkiyuk.activities.Home.PlaceDetail;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
@@ -47,8 +49,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         itemPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Toast.makeText(mContext, places.get(i).getDescription(), Toast.LENGTH_LONG).show();
-
+                //Toast.makeText(mContext, places.get(i).getDescription(), Toast.LENGTH_LONG).show();
+                Intent intent = new Intent(mContext, PlaceDetail.class);
+                intent.putExtra("place", places.get(i));
+                mContext.startActivity(intent);
 //                String url = "google.navigation:q=" + places.get(i).getLatitude() + "," + places.get(i).getLongitude();
 //                Uri gmmIntentUri = Uri.parse(url);
 //                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
