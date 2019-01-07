@@ -43,6 +43,20 @@ public class HomeFragment extends Fragment {
         GridView gridView = (GridView)rootView.findViewById(R.id.tv_home);
         gridView.setAdapter(new MyAdapter(getContext()));
 
+        gridView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> adapterView, View view, int i, long id) {
+                Intent intent = new Intent(getContext(), PlaceDetail.class);
+                // Show the item position using toast
+               /* Toast.makeText(MainActivity.this, "Position " + i,
+                        Toast.LENGTH_SHORT).show();*/
+
+                // Send captured position to ViewImage.java
+                intent.putExtra("id", i);
+                startActivity(intent);
+            }
+        });
+
         return rootView;
     }
 
@@ -101,7 +115,7 @@ public class HomeFragment extends Fragment {
                 v = inflater.inflate(R.layout.item_place, viewGroup, false);
                 v.setTag(R.id.coverImg, v.findViewById(R.id.coverImg));
                 v.setTag(R.id.text, v.findViewById(R.id.name));
-                /*v.setTag(R.id.desc, v.findViewById(R.id.desc));*/
+                v.setTag(R.id.desc, v.findViewById(R.id.desc));
             }
 
             picture = (ImageView)v.getTag(R.id.coverImg);
