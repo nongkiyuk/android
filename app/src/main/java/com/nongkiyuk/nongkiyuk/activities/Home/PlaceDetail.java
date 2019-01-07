@@ -1,6 +1,8 @@
 package com.nongkiyuk.nongkiyuk.activities.Home;
 
+import android.content.Context;
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -11,10 +13,13 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.Toolbar;
 
 import com.nongkiyuk.nongkiyuk.R;
@@ -23,31 +28,66 @@ import com.nongkiyuk.nongkiyuk.activities.Favorite.FavoriteFragment;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Models.Place;
 import com.nongkiyuk.nongkiyuk.activities.Home.Adapters.HomeAdapter;
 import com.nongkiyuk.nongkiyuk.activities.Home.Adapters.ImageAdapter;
+import com.nongkiyuk.nongkiyuk.network.ApiInterface;
+import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
+import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
+import com.nongkiyuk.nongkiyuk.utils.UtilsApi;
 
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
 import java.io.Serializable;
+import java.util.HashMap;
+
+import okhttp3.Request;
+import okhttp3.ResponseBody;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class PlaceDetail extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
-    BottomNavigationView bottomNavigationView;
-    TextView txtName;
-    TextView txtAddress;
-    TextView txtDescription;
-    LinearLayout sliderDotspanel;
+    private final String TAG = "Place Detail";
+    private ApiInterface mApiInterface;
+    private SQLiteHandler db;
+    private BottomNavigationView bottomNavigationView;
+    private TextView txtName;
+    private TextView txtAddress;
+    private TextView txtDescription;
+    private LinearLayout sliderDotspanel;
     private int dotscount;
     private ImageView[] dots;
+    private Place place;
+    private String token;
+    private Menu menu;
+    private boolean favorite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_detail);
 
+        Intent intent = getIntent();
+        place = (Place) intent.getSerializableExtra("place");
 
+        mApiInterface = UtilsApi.getApiInterface();
+        db = new SQLiteHandler(getApplicationContext());
+
+        HashMap<String, String> user = db.getUserDetails();
+        String access_token = user.get("access_token");
+        String token_type = user.get("token_type");
+        token = token_type + " " + access_token;
+
+        checkFavorite();
 
         bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
-        Intent intent = getIntent();
-        Place place = (Place) intent.getSerializableExtra("place");
+        menu = bottomNavigationView.getMenu();
+        if(favorite){
+            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+        }
 
         txtName = findViewById(R.id.name);
         txtAddress = findViewById(R.id.address);
@@ -104,12 +144,121 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_map:
+                navigateToMap();
                 break;
             case R.id.navigation_share:
+                shareToSocial();
                 break;
             case R.id.navigation_fav:
+                loveIt();
                 break;
         }
         return true;
+    }
+
+    private void navigateToMap()
+    {
+        String url = "google.navigation:q=" + place.getLatitude() + "," + place.getLongitude();
+        Uri gmmIntentUri = Uri.parse(url);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
+
+    private void shareToSocial()
+    {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBodyText = "Hai Saya Menggunakan NongkiYuk Untuk Mencari Lokasi Untuk Nongkrong , Yuk Nongkrong Bersama saya di  " + place.getName() + ", " + place.getAddress();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Yuk Pakai NongkiYuk");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBodyText);
+        startActivity(Intent.createChooser(sharingIntent, "Shearing Option"));
+    }
+
+    private void loveIt()
+    {
+        if(!favorite){
+            mApiInterface.sendFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        try {
+                            JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                            Log.d(TAG, jsonRESULTS.getString("status"));
+                            String msg = jsonRESULTS.getJSONObject("data").getString("msg");
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+                            favorite = true;
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            mApiInterface.removeFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+                        try {
+                            JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                            String msg = jsonRESULTS.getJSONObject("data").getString("msg");
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_border_black_24dp_fav_empty);
+                            favorite = false;
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
+
+    public void checkFavorite()
+    {
+        mApiInterface.checkFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
+            @Override
+            public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                if (response.isSuccessful()) {
+                    try {
+                        JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                        String status = jsonRESULTS.getJSONObject("data").getString("status");
+                        if(status.equals("true")){
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+                            favorite = true;
+                        }else{
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_border_black_24dp_fav_empty);
+                            favorite = false;
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                }
+            }
+
+            @Override
+            public void onFailure(Call<ResponseBody> call, Throwable t) {
+                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+            }
+        });
     }
 }

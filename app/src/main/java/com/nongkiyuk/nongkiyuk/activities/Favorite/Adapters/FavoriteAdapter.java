@@ -10,7 +10,6 @@ import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Models.Place;
@@ -49,15 +48,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
         itemPlace.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                //Toast.makeText(mContext, places.get(i).getDescription(), Toast.LENGTH_LONG).show();
                 Intent intent = new Intent(mContext, PlaceDetail.class);
+                intent.putExtra("favorite", true);
                 intent.putExtra("place", places.get(i));
                 mContext.startActivity(intent);
-//                String url = "google.navigation:q=" + places.get(i).getLatitude() + "," + places.get(i).getLongitude();
-//                Uri gmmIntentUri = Uri.parse(url);
-//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-//                mapIntent.setPackage("com.google.android.apps.maps");
-//                mContext.startActivity(mapIntent);
             }
         });
     }
