@@ -15,7 +15,10 @@ import android.widget.Button;
 
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Login.LoginActivity;
+import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
 import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
+
+import java.util.HashMap;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -31,6 +34,7 @@ public class AccountFragment extends Fragment {
     Button _logoutButton;
 
     SharedPrefManager sharedPrefManager;
+    private SQLiteHandler db;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -45,6 +49,12 @@ public class AccountFragment extends Fragment {
 
         ButterKnife.bind(this, rootView);
         sharedPrefManager = new SharedPrefManager(rootView.getContext());
+        // SQLite database handler
+        db = new SQLiteHandler(rootView.getContext());
+
+        // Fetching user
+        HashMap<String, String> user = db.getUserDetails();
+        String access_token = user.get("access_token");
 
         _logoutButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -57,6 +67,9 @@ public class AccountFragment extends Fragment {
                                 Log.d(TAG, "OK DITEKAN");
 
                                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, false);
+                                // delete user
+                                db.deleteUsers();
+
                                 Intent intent = new Intent(getActivity(), LoginActivity.class);
                                 startActivity(intent);
                                 ((Activity) getActivity()).overridePendingTransition(0,0);

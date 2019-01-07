@@ -19,6 +19,7 @@ import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
 import com.nongkiyuk.nongkiyuk.activities.SignUp.SignupActivity;
 import com.nongkiyuk.nongkiyuk.network.ApiInterface;
+import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
 import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
 import com.nongkiyuk.nongkiyuk.utils.UtilsApi;
 
@@ -46,6 +47,7 @@ public class LoginActivity extends AppCompatActivity {
     Context mContext;
     ApiInterface mApiInterface;
     SharedPrefManager sharedPrefManager;
+    private SQLiteHandler db;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +58,9 @@ public class LoginActivity extends AppCompatActivity {
         mContext = this;
         mApiInterface = UtilsApi.getApiInterface(); // init UtilsApi
         sharedPrefManager = new SharedPrefManager(this);
+
+        // SQLite database handler
+        db = new SQLiteHandler(getApplicationContext());
 
         _loginButton.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -113,6 +118,9 @@ public class LoginActivity extends AppCompatActivity {
                                 String access_token = jsonRESULTS.getJSONObject("data").getString("access_token");
                                 String token_type = jsonRESULTS.getJSONObject("data").getString("token_type");
                                 String expires_at = jsonRESULTS.getJSONObject("data").getString("expires_at");
+
+                                // Insert row in users table
+                                db.addUser(access_token, token_type, expires_at);
 
                                 sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, true);
                                 sharedPrefManager.saveSPString("API_KEY", token_type + " " + access_token);
