@@ -13,6 +13,7 @@ import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.text.Layout;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.ImageView;
@@ -47,6 +48,7 @@ import retrofit2.Response;
 
 public class PlaceDetail extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener{
 
+    private final String TAG = "Place Detail";
     private ApiInterface mApiInterface;
     private SQLiteHandler db;
     private BottomNavigationView bottomNavigationView;
@@ -59,11 +61,15 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
     private Place place;
     private String token;
     private Menu menu;
+    private boolean favorite;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_place_detail);
+
+        Intent intent = getIntent();
+        place = (Place) intent.getSerializableExtra("place");
 
         mApiInterface = UtilsApi.getApiInterface();
         db = new SQLiteHandler(getApplicationContext());
@@ -73,13 +79,15 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
         String token_type = user.get("token_type");
         token = token_type + " " + access_token;
 
+        checkFavorite();
+
         bottomNavigationView = findViewById(R.id.navigation);
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         menu = bottomNavigationView.getMenu();
-
-        Intent intent = getIntent();
-        place = (Place) intent.getSerializableExtra("place");
+        if(favorite){
+            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+        }
 
         txtName = findViewById(R.id.name);
         txtAddress = findViewById(R.id.address);
@@ -169,14 +177,76 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
 
     private void loveIt()
     {
-        mApiInterface.sendFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
+        if(!favorite){
+            mApiInterface.sendFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        try {
+                            JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                            Log.d(TAG, jsonRESULTS.getString("status"));
+                            String msg = jsonRESULTS.getJSONObject("data").getString("msg");
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+                            favorite = true;
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }else{
+            mApiInterface.removeFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
+                @Override
+                public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                    if (response.isSuccessful()) {
+                        menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+                        try {
+                            JSONObject jsonRESULTS = new JSONObject(response.body().string());
+                            String msg = jsonRESULTS.getJSONObject("data").getString("msg");
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_border_black_24dp_fav_empty);
+                            favorite = false;
+                            Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_SHORT).show();
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        }
+                    }
+                }
+
+                @Override
+                public void onFailure(Call<ResponseBody> call, Throwable t) {
+                    Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
+                }
+            });
+        }
+
+    }
+
+    public void checkFavorite()
+    {
+        mApiInterface.checkFavotire(token, place.getId()).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
                 if (response.isSuccessful()) {
                     try {
                         JSONObject jsonRESULTS = new JSONObject(response.body().string());
-                        String msg = jsonRESULTS.getJSONObject("data").getString("msg");
-                        Toast.makeText(getApplicationContext(), msg, Toast.LENGTH_LONG).show();
+                        String status = jsonRESULTS.getJSONObject("data").getString("status");
+                        if(status.equals("true")){
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_black_24dp_fav);
+                            favorite = true;
+                        }else{
+                            menu.findItem(R.id.navigation_fav).setIcon(R.drawable.ic_favorite_border_black_24dp_fav_empty);
+                            favorite = false;
+                        }
                     } catch (JSONException e) {
                         e.printStackTrace();
                     } catch (IOException e) {
@@ -187,7 +257,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
-                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_LONG).show();
+                Toast.makeText(getApplicationContext(), "Fail", Toast.LENGTH_SHORT).show();
             }
         });
     }

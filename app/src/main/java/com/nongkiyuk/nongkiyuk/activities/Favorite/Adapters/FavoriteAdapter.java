@@ -49,6 +49,7 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(mContext, PlaceDetail.class);
+                intent.putExtra("favorite", true);
                 intent.putExtra("place", places.get(i));
                 mContext.startActivity(intent);
             }

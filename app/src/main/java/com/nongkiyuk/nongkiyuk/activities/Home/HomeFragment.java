@@ -108,7 +108,7 @@ public class HomeFragment extends Fragment {
                                 String imageUrl[] = new String[images.length()];
                                 for(int j = 0; j < images.length(); j++) {
                                     JSONObject image = images.getJSONObject(j);
-                                    Log.d("IMAGE " + place.getString("name"), image.getString("url"));
+                                    //Log.d("IMAGE " + place.getString("name"), image.getString("url"));
                                     imageUrl[j] = image.getString("url");
                                 }
                                 JSONObject cover = place.getJSONObject("cover");
