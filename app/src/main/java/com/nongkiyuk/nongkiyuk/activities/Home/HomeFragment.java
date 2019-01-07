@@ -4,9 +4,11 @@ package com.nongkiyuk.nongkiyuk.activities.Home;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.DefaultItemAnimator;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -29,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import butterknife.BindView;
+import butterknife.ButterKnife;
 import okhttp3.ResponseBody;
 import retrofit2.Call;
 import retrofit2.Callback;
@@ -45,6 +49,9 @@ public class HomeFragment extends Fragment {
     private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
     private static RecyclerView mRecyclerView;
+
+    @BindView(R.id.toolbarId)
+    Toolbar toolbar;
 
     public HomeFragment() {
         // Required empty public constructor
@@ -66,7 +73,11 @@ public class HomeFragment extends Fragment {
         mAdapter = new HomeAdapter(getContext(), places);
         mRecyclerView.setAdapter(mAdapter);
 
+        ButterKnife.bind(this, view);
         mApiInterface = UtilsApi.getApiInterface();
+
+        ((AppCompatActivity) getActivity()).setSupportActionBar(toolbar);
+        ((AppCompatActivity) getActivity()).getSupportActionBar().setDisplayShowTitleEnabled(false);
 
         final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
                 R.style.AppTheme_Dark_Dialog);
