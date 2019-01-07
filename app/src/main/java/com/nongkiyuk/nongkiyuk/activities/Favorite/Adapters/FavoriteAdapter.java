@@ -49,10 +49,10 @@ public class FavoriteAdapter extends RecyclerView.Adapter<FavoriteAdapter.ViewHo
             public void onClick(View v) {
                 Toast.makeText(mContext, places.get(i).getCoverUrl(), Toast.LENGTH_LONG).show();
                 String url = "google.navigation:q=" + places.get(i).getLatitude() + "," + places.get(i).getLongitude();
-                Uri gmmIntentUri = Uri.parse(url);
-                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
-                mapIntent.setPackage("com.google.android.apps.maps");
-                mContext.startActivity(mapIntent);
+//                Uri gmmIntentUri = Uri.parse(url);
+//                Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+//                mapIntent.setPackage("com.google.android.apps.maps");
+//                mContext.startActivity(mapIntent);
             }
         });
     }

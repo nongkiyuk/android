@@ -13,11 +13,6 @@
         android:scaleType="centerCrop"
         android:src="@drawable/nongkiyuk_logo"
         />
-    <ImageView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:src="@android:drawable/star_big_off"
-        android:layout_centerVertical="@id/coverImg"/>
     <TextView
         android:id="@+id/name"
         android:layout_width="wrap_content"
