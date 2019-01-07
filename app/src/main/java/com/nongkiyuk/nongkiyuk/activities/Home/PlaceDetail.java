@@ -1,6 +1,7 @@
 package com.nongkiyuk.nongkiyuk.activities.Home;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Parcelable;
 import android.support.annotation.NonNull;
 import android.support.design.widget.BottomNavigationView;
@@ -33,8 +34,9 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
     TextView txtAddress;
     TextView txtDescription;
     LinearLayout sliderDotspanel;
-    private int dotscount;
-    private ImageView[] dots;
+    int dotscount;
+    ImageView[] dots;
+    Place place;
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -47,7 +49,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
         bottomNavigationView.setOnNavigationItemSelectedListener(this);
 
         Intent intent = getIntent();
-        Place place = (Place) intent.getSerializableExtra("place");
+        place = (Place) intent.getSerializableExtra("place");
 
         txtName = findViewById(R.id.name);
         txtAddress = findViewById(R.id.address);
@@ -104,12 +106,39 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
     public boolean onNavigationItemSelected(@NonNull MenuItem menuItem) {
         switch (menuItem.getItemId()) {
             case R.id.navigation_map:
+                navigateToMap();
                 break;
             case R.id.navigation_share:
+                shareToSocial();
                 break;
             case R.id.navigation_fav:
+                loveIt();
                 break;
         }
         return true;
+    }
+
+    private void navigateToMap()
+    {
+        String url = "google.navigation:q=" + place.getLatitude() + "," + place.getLongitude();
+        Uri gmmIntentUri = Uri.parse(url);
+        Intent mapIntent = new Intent(Intent.ACTION_VIEW, gmmIntentUri);
+        mapIntent.setPackage("com.google.android.apps.maps");
+        startActivity(mapIntent);
+    }
+
+    private void shareToSocial()
+    {
+        Intent sharingIntent = new Intent(android.content.Intent.ACTION_SEND);
+        sharingIntent.setType("text/plain");
+        String shareBodyText = "Hai Saya Menggunakan NongkiYuk Untuk Mencari Lokasi Untuk Nongkrong , Yuk Nongkrong Bersama saya di  " + place.getName() + ", " + place.getAddress();
+        sharingIntent.putExtra(android.content.Intent.EXTRA_SUBJECT,"Yuk Pakai NongkiYuk");
+        sharingIntent.putExtra(android.content.Intent.EXTRA_TEXT, shareBodyText);
+        startActivity(Intent.createChooser(sharingIntent, "Shearing Option"));
+    }
+
+    private void loveIt()
+    {
+
     }
 }
