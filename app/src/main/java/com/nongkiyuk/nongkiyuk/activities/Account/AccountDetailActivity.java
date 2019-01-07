@@ -2,11 +2,14 @@ package com.nongkiyuk.nongkiyuk.activities.Account;
 
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -14,6 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nongkiyuk.nongkiyuk.R;
+import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
 import com.nongkiyuk.nongkiyuk.activities.SignUp.SignupActivity;
 import com.nongkiyuk.nongkiyuk.network.ApiInterface;
 import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
@@ -38,7 +42,6 @@ public class AccountDetailActivity extends AppCompatActivity {
 
 
     private static final String TAG = AccountDetailActivity.class.getSimpleName();
-    private static FragmentManager fragmentManager;
 
     SharedPrefManager sharedPrefManager;
     Context mContext;
@@ -61,7 +64,7 @@ public class AccountDetailActivity extends AppCompatActivity {
         mContext = this;
         mApiInterface = UtilsApi.getApiInterface(); // init UtilsApi
         sharedPrefManager = new SharedPrefManager(this);
-        fragmentManager = getSupportFragmentManager();
+//        fragmentManager = getSupportFragmentManager();
 
         // SQLite database handler
         db = new SQLiteHandler(getApplicationContext());
@@ -155,7 +158,8 @@ public class AccountDetailActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(response.body().string());
                                 Log.d(TAG, "MESSAGE : " + String.valueOf(jsonObject));
                                 _saveButton.setEnabled(true);
-                                fragmentManager.beginTransaction().replace(R.id.fl_container, new AccountFragment()).commit();
+
+                                onSuccessSaveProfile();
                             } catch (JSONException e) {
                                 e.printStackTrace();
                             } catch (IOException e) {
@@ -185,6 +189,13 @@ public class AccountDetailActivity extends AppCompatActivity {
                     }
                 });
 
+    }
+
+    private void onSuccessSaveProfile() {
+        startActivity(new Intent(mContext, AccountFragment.class)
+                .addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK));
+        finish();
+        overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
     }
 
     public boolean validate() {
