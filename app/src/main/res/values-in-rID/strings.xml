@@ -5,6 +5,8 @@
     <string name="home">Beranda</string>
     <string name="favorite">Favorit</string>
     <string name="account">Akun</string>
+    <string name="maps">Buka Map</string>
+    <string name="share">Bagikan</string>
 
     <string name="button_register">Daftar</string>
     <string name="button_login">Masuk</string>
