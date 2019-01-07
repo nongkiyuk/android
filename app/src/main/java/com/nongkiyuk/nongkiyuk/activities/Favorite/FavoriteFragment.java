@@ -1,6 +1,8 @@
 package com.nongkiyuk.nongkiyuk.activities.Favorite;
 
 
+import android.app.ProgressDialog;
+import android.database.sqlite.SQLiteOpenHelper;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.DefaultItemAnimator;
@@ -16,7 +18,9 @@ import android.widget.Toast;
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Adapters.FavoriteAdapter;
 import com.nongkiyuk.nongkiyuk.activities.Favorite.Models.Place;
+import com.nongkiyuk.nongkiyuk.activities.Login.LoginActivity;
 import com.nongkiyuk.nongkiyuk.network.ApiInterface;
+import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
 import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
 import com.nongkiyuk.nongkiyuk.utils.UtilsApi;
 
@@ -26,6 +30,7 @@ import org.json.JSONObject;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import okhttp3.ResponseBody;
 import retrofit2.Call;
@@ -38,7 +43,7 @@ import retrofit2.Response;
 public class FavoriteFragment extends Fragment {
 
     ApiInterface mApiInterface;
-    SharedPrefManager sharedPrefManager;
+    private SQLiteHandler db;
     ArrayList<Place> places = new ArrayList<Place>();
     private static RecyclerView.Adapter mAdapter;
     private RecyclerView.LayoutManager mLayoutManager;
@@ -65,14 +70,23 @@ public class FavoriteFragment extends Fragment {
         mRecyclerView.setAdapter(mAdapter);
 
         mApiInterface = UtilsApi.getApiInterface();
-        sharedPrefManager = new SharedPrefManager(getContext());
+        db = new SQLiteHandler(getContext());
 
-        String apiKey = sharedPrefManager.getSpString("API_KEY");
+        HashMap<String, String> user = db.getUserDetails();
+        String access_token = user.get("access_token");
+        String token_type = user.get("token_type");
+        String token = token_type + " " + access_token;
 
+        final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
+                R.style.AppTheme_Dark_Dialog);
+        progressDialog.setIndeterminate(true);
+        progressDialog.setMessage("Fetching...");
+        progressDialog.show();
 
-        mApiInterface.getFavoritePlaces(apiKey).enqueue(new Callback<ResponseBody>() {
+        mApiInterface.getFavoritePlaces(token).enqueue(new Callback<ResponseBody>() {
             @Override
             public void onResponse(Call<ResponseBody> call, Response<ResponseBody> response) {
+                progressDialog.dismiss();
                 if(response.isSuccessful() && response.code() == 200){
                     try {
                         JSONObject jsonRESULTS = new JSONObject(response.body().string());
@@ -89,13 +103,15 @@ public class FavoriteFragment extends Fragment {
                             for(int i = 0; i < data.length(); i++){
                                 JSONObject place = data.getJSONObject(i);
                                 JSONArray images = place.getJSONArray("images");
+                                String imageUrl[] = new String[images.length()];
                                 for(int j = 0; j < images.length(); j++) {
                                     JSONObject image = images.getJSONObject(j);
                                     Log.d("IMAGE " + place.getString("name"), image.getString("url"));
+                                    imageUrl[j] = image.getString("url");
                                 }
                                 JSONObject cover = place.getJSONObject("cover");
                                 places.add(new Place(place.getString("id"), place.getString("name"),
-                                        place.getString("description"), place.getString("latitude"), place.getString("longitude"), cover.getString("url")));
+                                        place.getString("description"), place.getString("latitude"), place.getString("longitude"), cover.getString("url"), imageUrl));
                             }
                             mAdapter = new FavoriteAdapter(getContext(), places);
                             mRecyclerView.swapAdapter(mAdapter, true);
@@ -111,6 +127,7 @@ public class FavoriteFragment extends Fragment {
 
             @Override
             public void onFailure(Call<ResponseBody> call, Throwable t) {
+                progressDialog.dismiss();
                 Toast.makeText(getActivity(), "Something went wrongs", Toast.LENGTH_LONG).show();
             }
         });

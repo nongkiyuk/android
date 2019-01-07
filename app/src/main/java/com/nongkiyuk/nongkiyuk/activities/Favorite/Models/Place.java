@@ -1,8 +1,9 @@
 package com.nongkiyuk.nongkiyuk.activities.Favorite.Models;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 
-public class Place {
+public class Place implements Serializable {
     String id;
     String name;
     String description;
@@ -10,15 +11,16 @@ public class Place {
     String latitude;
     String coverUrl;
 
-    ArrayList<String> imageUrls;
+    String imageUrls[];
 
-    public Place(String id, String name, String description, String latitude, String longitude, String coverUrl) {
+    public Place(String id, String name, String description, String latitude, String longitude, String coverUrl, String[] imageUrls) {
         this.id = id;
         this.name = name;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
         this.coverUrl = coverUrl;
+        this.imageUrls = imageUrls;
     }
 
     public String getLongitude() {
@@ -67,5 +69,13 @@ public class Place {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String[] getImageUrls() {
+        return imageUrls;
+    }
+
+    public void setImageUrls(String[] imageUrls) {
+        this.imageUrls = imageUrls;
     }
 }

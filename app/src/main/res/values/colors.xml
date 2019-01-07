@@ -22,4 +22,8 @@
 
     <color name="colorNavigationActive">#FFFFFF</color>
     <color name="colorNavigationInactive">#76FFFFFF</color>
+
+    <color name="startBlue">#09C6DF</color>
+    <color name="endBlue">#0BCCE6</color>
+    <color name="grayLight">#FAFAFA</color>
 </resources>

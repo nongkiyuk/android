@@ -5,6 +5,20 @@
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".activities.Home.PlaceDetail">
 
+    <android.support.v4.view.ViewPager
+        android:id="@+id/view_pager"
+        android:layout_width="match_parent"
+        android:layout_height="200dp">
+    </android.support.v4.view.ViewPager>
+
+    <LinearLayout
+        android:id="@+id/SliderDots"
+        android:layout_below="@+id/view_pager"
+        android:orientation="horizontal"
+        android:gravity="center_vertical|center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
+
     <ImageView
         android:id="@+id/coverImg"
         android:layout_width="match_parent"
@@ -13,9 +27,9 @@
         android:paddingTop="20dp"/>
 
     <TextView
+        android:id="@+id/name"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/name"
         android:layout_below="@+id/coverImg"
         android:layout_alignParentStart="true"
         android:layout_gravity="center_vertical"
@@ -24,9 +38,9 @@
         android:textSize="50dp"/>
 
     <TextView
+        android:id="@+id/desc"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:id="@+id/desc"
         android:layout_alignParentStart="true"
         android:layout_alignParentBottom="true"
         android:layout_marginBottom="142dp"
