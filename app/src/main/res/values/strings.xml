@@ -6,10 +6,6 @@
     <string name="account">Account</string>
     <string name="maps">Open Map</string>
     <string name="share">Share</string>
-<<<<<<< HEAD
-    <string name="favorites">Favorite</string>
-=======
->>>>>>> b385524b8dc253438cf4558f14ca913f31797878
 
     <string name="button_register">Register</string>
     <string name="button_login">Login</string>

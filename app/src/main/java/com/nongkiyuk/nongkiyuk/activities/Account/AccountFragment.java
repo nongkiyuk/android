@@ -17,19 +17,20 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
-import android.support.v7.app.AppCompatActivity;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.AdapterView;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Login.LoginActivity;
-import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
 import com.nongkiyuk.nongkiyuk.network.ApiInterface;
 import com.nongkiyuk.nongkiyuk.utils.SQLiteHandler;
 import com.nongkiyuk.nongkiyuk.utils.SharedPrefManager;
@@ -72,18 +73,17 @@ public class AccountFragment extends Fragment {
     TextView _emailView;
     @BindView(R.id.iv_profile)
     ImageView _pictureImage;
-    @BindView(R.id.btn_edit)
-    Button _editButton;
-    @BindView(R.id.btn_logout)
-    Button _logoutButton;
-    @BindView(R.id.btn_language)
-    Button _languageButton;
+    @BindView(R.id.lv_setting)
+    ListView _settingListView;
 
     Context mContext;
     ApiInterface mApiInterface;
     SharedPrefManager sharedPrefManager;
     private SQLiteHandler db;
     private Uri uri;
+
+
+    private String[] setting_lists = null;
 
     public AccountFragment() {
         // Required empty public constructor
@@ -117,46 +117,6 @@ public class AccountFragment extends Fragment {
         // set user profile
         setUserProfile(token_type, access_token);
 
-        _logoutButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppTheme_Light_Dialog);
-                builder.setMessage(R.string.content_area_logout)
-                        .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d(TAG, "OK DITEKAN");
-
-                                sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, false);
-                                // delete user
-                                db.deleteUsers();
-
-                                Intent intent = new Intent(getActivity(), LoginActivity.class);
-                                startActivity(intent);
-                                ((Activity) getActivity()).overridePendingTransition(0,0);
-                            }
-                        })
-                        .setNegativeButton(R.string.label_no, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                Log.d(TAG, "TIDAK DITEKAN");
-                                dialog.dismiss();
-                            }
-                        });
-                AlertDialog dialog = builder.create();
-                dialog.show();
-            }
-        });
-
-        _editButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(getActivity(), AccountDetailActivity.class);
-                startActivity(intent);
-                ((Activity) getActivity()).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
-            }
-        });
-
         _pictureImage.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -176,11 +136,58 @@ public class AccountFragment extends Fragment {
             }
         });
 
-        _languageButton.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
-                startActivity(intent);
+        // listview
+        setting_lists = new String[]{
+                getString(R.string.button_change_account), getString(R.string.button_change_language), getString(R.string.button_logout)
+        };
+
+        ArrayAdapter<String> adapter = new ArrayAdapter<String>(getActivity(),
+                android.R.layout.simple_list_item_1, android.R.id.text1, setting_lists);
+        _settingListView.setAdapter(adapter);
+        _settingListView.setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            public void onItemClick(AdapterView<?> parent, View view,
+                                    int position, long id) {
+                switch (position) {
+                    case 0:
+                        Log.d(TAG, "LISTVIEW UBAH DITEKAN");
+                        Intent editIntent = new Intent(getActivity(), AccountDetailActivity.class);
+                        startActivity(editIntent);
+                        ((Activity) getActivity()).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
+                        break;
+                    case 1:
+                        Log.d(TAG, "LISTVIEW BAHASA DITEKAN");
+                        Intent intent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
+                        startActivity(intent);
+                        break;
+                    case 2:
+                        Log.d(TAG, "LISTVIEW KELUAR DITEKAN");
+                        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity(), R.style.AppTheme_Light_Dialog);
+                        builder.setMessage(R.string.content_area_logout)
+                                .setPositiveButton(R.string.label_yes, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Log.d(TAG, "OK DITEKAN");
+
+                                        sharedPrefManager.saveSPBoolean(SharedPrefManager.SP_LOGGED_IN, false);
+                                        // delete user
+                                        db.deleteUsers();
+
+                                        Intent intent = new Intent(getActivity(), LoginActivity.class);
+                                        startActivity(intent);
+                                        ((Activity) getActivity()).overridePendingTransition(0,0);
+                                    }
+                                })
+                                .setNegativeButton(R.string.label_no, new DialogInterface.OnClickListener() {
+                                    @Override
+                                    public void onClick(DialogInterface dialog, int which) {
+                                        Log.d(TAG, "TIDAK DITEKAN");
+                                        dialog.dismiss();
+                                    }
+                                });
+                        AlertDialog dialog = builder.create();
+                        dialog.show();
+                        break;
+                }
             }
         });
 
