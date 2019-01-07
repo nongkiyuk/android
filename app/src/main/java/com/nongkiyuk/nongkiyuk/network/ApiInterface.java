@@ -6,6 +6,7 @@ import retrofit2.http.Field;
 import retrofit2.http.FormUrlEncoded;
 import retrofit2.http.GET;
 import retrofit2.http.Header;
+import retrofit2.http.PATCH;
 import retrofit2.http.POST;
 
 public interface ApiInterface {
@@ -21,6 +22,17 @@ public interface ApiInterface {
                                        @Field("email") String email,
                                        @Field("username") String username,
                                        @Field("password") String password);
+
+    @GET("user")
+    Call<ResponseBody> profileRequest(@Header("Authorization") String token);
+
+    @FormUrlEncoded
+    @PATCH("user")
+    Call<ResponseBody> saveProfileRequest(@Header("Authorization") String token,
+                                          @Field("name") String name,
+                                          @Field("email") String email,
+                                          @Field("username") String username,
+                                          @Field("password") String password);
 
     @GET("places/favorite")
     Call<ResponseBody> getFavoritePlaces(@Header("Authorization") String key);
