@@ -37,11 +37,11 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     @Override
     public void onBindViewHolder(ViewHolder viewHolder, final int i) {
-        TextView textView = viewHolder.textView;
+        TextView txtName = viewHolder.txtName;
         ImageView coverImg = viewHolder.coverImg;
         RelativeLayout itemPlace = viewHolder.itemPlace;
 
-        textView.setText(places.get(i).getName());
+        txtName.setText(places.get(i).getName());
         Picasso.get().load(places.get(i).getCoverUrl()).into(coverImg);
         itemPlace.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -61,13 +61,13 @@ public class HomeAdapter extends RecyclerView.Adapter<HomeAdapter.ViewHolder> {
 
     public class ViewHolder extends RecyclerView.ViewHolder {
 
-        TextView textView;
+        TextView txtName;
         ImageView coverImg;
         RelativeLayout itemPlace;
 
         public ViewHolder(final View itemView) {
             super(itemView);
-            this.textView = (TextView)itemView.findViewById(R.id.name);
+            this.txtName = (TextView)itemView.findViewById(R.id.name);
             this.coverImg = (ImageView)itemView.findViewById(R.id.coverImg);
             this.itemPlace = (RelativeLayout)itemView.findViewById(R.id.item_place);
         }

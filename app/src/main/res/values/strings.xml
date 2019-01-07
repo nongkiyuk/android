@@ -4,6 +4,9 @@
     <string name="home">Home</string>
     <string name="favorite">Favorite</string>
     <string name="account">Account</string>
+    <string name="maps">Open Maps</string>
+    <string name="share">Share</string>
+    <string name="favorites">My Favorite</string>
 
     <string name="button_register">Register</string>
     <string name="button_login">Login</string>

@@ -26,4 +26,6 @@
     <color name="startBlue">#09C6DF</color>
     <color name="endBlue">#0BCCE6</color>
     <color name="grayLight">#FAFAFA</color>
+
+    <color name="bgBottomNavigation">#e0e0e0</color>
 </resources>

@@ -112,7 +112,7 @@ public class HomeFragment extends Fragment {
                                     imageUrl[j] = image.getString("url");
                                 }
                                 JSONObject cover = place.getJSONObject("cover");
-                                places.add(new Place(place.getString("id"), place.getString("name"),
+                                places.add(new Place(place.getString("id"), place.getString("name"), place.getString("address"),
                                         place.getString("description"), place.getString("latitude"),
                                         place.getString("longitude"), cover.getString("url"), imageUrl));
                             }
