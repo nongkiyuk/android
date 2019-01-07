@@ -22,6 +22,6 @@ public interface ApiInterface {
                                        @Field("username") String username,
                                        @Field("password") String password);
 
-    @GET("user")
-    Call<ResponseBody> profileRequest(@Header("Authorization") String token);
+    @GET("places/favorite")
+    Call<ResponseBody> getFavoritePlaces(@Header("Authorization") String key);
 }

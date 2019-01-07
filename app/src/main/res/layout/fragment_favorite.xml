@@ -6,13 +6,9 @@
     android:orientation="vertical"
     tools:context=".activities.Favorite.FavoriteFragment">
 
-    <TextView
-        android:textColor="@color/jumbo"
-        android:id="@+id/tv_favorite"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_centerInParent="true"
-        android:text="@string/favorite"
-        android:textAppearance="@style/TextAppearance.AppCompat.Medium" />
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/favorite_rv"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"></android.support.v7.widget.RecyclerView>
 
 </RelativeLayout>
