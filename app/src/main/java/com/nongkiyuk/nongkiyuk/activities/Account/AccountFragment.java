@@ -6,6 +6,7 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
@@ -67,14 +68,16 @@ public class AccountFragment extends Fragment {
         // Required empty public constructor
     }
 
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.fragment_account, container, false);
-
-//        ((AppCompatActivity) getActivity()).getSupportActionBar().hide();
 
         ButterKnife.bind(this, rootView);
         mContext = rootView.getContext();
@@ -125,9 +128,6 @@ public class AccountFragment extends Fragment {
         _editButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-//                getFragmentManager().beginTransaction()
-//                        .replace(R.id.fl_container, new AccountDetailFragment())
-//                        .commit();
                 Intent intent = new Intent(getActivity(), AccountDetailActivity.class);
                 startActivity(intent);
                 ((Activity) getActivity()).overridePendingTransition(R.anim.push_left_in, R.anim.push_left_out);
@@ -177,5 +177,4 @@ public class AccountFragment extends Fragment {
                     }
                 });
     }
-
 }
