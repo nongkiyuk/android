@@ -72,6 +72,9 @@ public class AccountDetailActivity extends AppCompatActivity {
         HashMap<String, String> user = db.getUserDetails();
         final String access_token = user.get("access_token");
         final String token_type = user.get("token_type");
+        final String auth_name = user.get("name");
+
+        Log.d(TAG, "Nama User: " + auth_name);
 
         setSupportActionBar(toolbar);
         getSupportActionBar().setTitle(R.string.button_change_account);
@@ -141,9 +144,9 @@ public class AccountDetailActivity extends AppCompatActivity {
         progressDialog.setMessage(getString(R.string.label_save_profile) + "...");
         progressDialog.show();
 
-        String name = _nameText.getText().toString();
-        String username = _usernameText.getText().toString();
-        String email = _emailText.getText().toString();
+        final String name = _nameText.getText().toString();
+        final String username = _usernameText.getText().toString();
+        final String email = _emailText.getText().toString();
         String password = _passwordText.getText().toString();
         String token = token_type + " " + access_token;
 
@@ -158,6 +161,9 @@ public class AccountDetailActivity extends AppCompatActivity {
                                 JSONObject jsonObject = new JSONObject(response.body().string());
                                 Log.d(TAG, "MESSAGE : " + String.valueOf(jsonObject));
                                 _saveButton.setEnabled(true);
+
+                                // update to sqlite
+                                db.updateUser(name, username, email);
 
                                 onSuccessSaveProfile();
                             } catch (JSONException e) {
