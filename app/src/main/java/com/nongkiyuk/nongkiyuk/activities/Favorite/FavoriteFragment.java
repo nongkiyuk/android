@@ -74,9 +74,10 @@ public class FavoriteFragment extends Fragment {
         db = new SQLiteHandler(getContext());
         sharedPrefManager = new SharedPrefManager(getContext());
 
-        HashMap<String, String> tok = db.getUserDetails();
-        Log.d("SQLITE TOKEN", " " + tok.get());
-        String token = sharedPrefManager.getSpString("API_KEY");
+        HashMap<String, String> user = db.getUserDetails();
+        String access_token = user.get("access_token");
+        String token_type = user.get("token_type");
+        String token = token_type + " " + access_token;
 
         final ProgressDialog progressDialog = new ProgressDialog(getActivity(),
                 R.style.AppTheme_Dark_Dialog);
