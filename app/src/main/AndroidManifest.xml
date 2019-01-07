@@ -55,6 +55,7 @@
         </service>
 
         <activity android:name=".activities.Account.AccountDetailActivity"></activity>
+        <activity android:name=".activities.Home.PlaceDetail"></activity>
     </application>
 
 </manifest>
