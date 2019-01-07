@@ -22,13 +22,13 @@ public class PlaceDetail extends AppCompatActivity {
         Intent intent = getIntent();
 
         int i = intent.getExtras().getInt("id");
-        HomeFragment.MyAdapter myAdapter = new HomeFragment.MyAdapter(this);
-
-        ImageView picture = (ImageView) findViewById(R.id.coverImg);
-        TextView name = (TextView) findViewById(R.id.name);
-        TextView desc = (TextView) findViewById(R.id.desc);
-        picture.setImageResource(myAdapter.items.get(i).drawableId);
-        name.setText(HomeFragment.MyAdapter.items.get(i).name);
-        desc.setText(HomeFragment.MyAdapter.items.get(i).desc);
+//        HomeFragment.MyAdapter myAdapter = new HomeFragment.MyAdapter(this);
+//
+//        ImageView picture = (ImageView) findViewById(R.id.coverImg);
+//        TextView name = (TextView) findViewById(R.id.name);
+//        TextView desc = (TextView) findViewById(R.id.desc);
+//        picture.setImageResource(myAdapter.items.get(i).drawableId);
+//        name.setText(HomeFragment.MyAdapter.items.get(i).name);
+//        desc.setText(HomeFragment.MyAdapter.items.get(i).desc);
     }
 }

@@ -15,7 +15,6 @@
         android:background="#FFF5F5F5"
         android:gravity="center"
         android:stretchMode="columnWidth"
-        android:padding="5dp"
         android:textAppearance="@style/Base.TextAppearance.AppCompat.Medium"></android.support.v7.widget.RecyclerView>
 
 </FrameLayout>

@@ -36,4 +36,7 @@ public interface ApiInterface {
 
     @GET("places/favorite")
     Call<ResponseBody> getFavoritePlaces(@Header("Authorization") String token);
+
+    @GET("places")
+    Call<ResponseBody> getPlaces();
 }

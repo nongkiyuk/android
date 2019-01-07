@@ -43,7 +43,6 @@ import retrofit2.Response;
 public class FavoriteFragment extends Fragment {
 
     ApiInterface mApiInterface;
-    SharedPrefManager sharedPrefManager;
     private SQLiteHandler db;
     ArrayList<Place> places = new ArrayList<Place>();
     private static RecyclerView.Adapter mAdapter;
@@ -72,7 +71,6 @@ public class FavoriteFragment extends Fragment {
 
         mApiInterface = UtilsApi.getApiInterface();
         db = new SQLiteHandler(getContext());
-        sharedPrefManager = new SharedPrefManager(getContext());
 
         HashMap<String, String> user = db.getUserDetails();
         String access_token = user.get("access_token");

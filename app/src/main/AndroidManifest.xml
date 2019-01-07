@@ -26,19 +26,26 @@
 
         <activity
             android:name=".activities.Main.MainActivity"
-            android:exported="true" />
+            android:exported="true"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.Login.LoginActivity"
-            android:theme="@style/AppTheme.Dark" />
+            android:theme="@style/AppTheme.Dark"
+            android:screenOrientation="portrait"/>
         <activity
             android:name=".activities.SignUp.SignupActivity"
-            android:theme="@style/AppTheme.Dark">
+            android:theme="@style/AppTheme.Dark"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+        <activity android:name=".activities.Account.AccountDetailActivity"
+            android:screenOrientation="portrait"/>
+        <activity android:name=".activities.Home.PlaceDetail"
+            android:screenOrientation="portrait"/>
 
         <service android:name=".network.FirebaseClientIdService">
             <intent-filter>
@@ -53,9 +60,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <activity android:name=".activities.Account.AccountDetailActivity"></activity>
-        <activity android:name=".activities.Home.PlaceDetail"></activity>
     </application>
 
 </manifest>
