@@ -7,6 +7,7 @@
     tools:context=".activities.Favorite.FavoriteFragment">
 
     <TextView
+        android:textColor="@color/jumbo"
         android:id="@+id/tv_favorite"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
