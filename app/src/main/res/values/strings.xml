@@ -5,8 +5,26 @@
     <string name="favorite">Favorite</string>
     <string name="account">Account</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="button_register">Register</string>
+    <string name="button_login">Login</string>
+    <string name="button_save">Save</string>
+    <string name="button_logout">Logout</string>
+    <string name="button_change_language">Change Language</string>
+    <string name="button_change_account">Edit Profile</string>
+
+    <string name="label_name">Name</string>
+    <string name="label_reenter_password">Re-enter Password</string>
+    <string name="help_text_password">Leave blank if not change.</string>
+    <string name="link_register">No account yet? Create one</string>
+    <string name="link_login">Already a member? Login</string>
+    <string name="label_yes">Yes</string>
+    <string name="label_no">No</string>
+    <string name="content_area_logout">Are you sure you want to exit?</string>
+    <string name="label_creating_content">Creating Account</string>
+    <string name="label_authenticating">Authenticating</string>
+    <string name="label_save_profile">Save profile</string>
+    <string name="label_incorrect_authentication">The username or password you entered is incorrect. Please try again.</string>
+    <string name="label_try_again">Try again</string>
 
     <string name="default_notification_channel_id" translatable="false">fcm_default_channel</string>
     <string name="default_notification_channel_name">broadcast</string>
