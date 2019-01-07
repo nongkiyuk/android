@@ -6,6 +6,7 @@ import java.util.ArrayList;
 public class Place implements Serializable {
     String id;
     String name;
+    String address;
     String description;
     String longitude;
     String latitude;
@@ -13,9 +14,10 @@ public class Place implements Serializable {
 
     String imageUrls[];
 
-    public Place(String id, String name, String description, String latitude, String longitude, String coverUrl, String[] imageUrls) {
+    public Place(String id, String name, String address, String description, String latitude, String longitude, String coverUrl, String[] imageUrls) {
         this.id = id;
         this.name = name;
+        this.address = address;
         this.description = description;
         this.latitude = latitude;
         this.longitude = longitude;
@@ -77,5 +79,13 @@ public class Place implements Serializable {
 
     public void setImageUrls(String[] imageUrls) {
         this.imageUrls = imageUrls;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

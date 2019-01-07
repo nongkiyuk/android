@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.ActionBar;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.text.Layout;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -29,6 +30,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
 
     BottomNavigationView bottomNavigationView;
     TextView txtName;
+    TextView txtAddress;
     TextView txtDescription;
     LinearLayout sliderDotspanel;
     private int dotscount;
@@ -48,6 +50,7 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
         Place place = (Place) intent.getSerializableExtra("place");
 
         txtName = findViewById(R.id.name);
+        txtAddress = findViewById(R.id.address);
         txtDescription = findViewById(R.id.desc);
 
         sliderDotspanel = (LinearLayout) findViewById(R.id.SliderDots);
@@ -92,7 +95,8 @@ public class PlaceDetail extends AppCompatActivity implements BottomNavigationVi
         });
 
         txtName.setText(place.getName());
-        txtDescription.setText("Tayo");
+        txtAddress.setText(place.getAddress());
+        txtDescription.setText(place.getDescription());
 
     }
 
