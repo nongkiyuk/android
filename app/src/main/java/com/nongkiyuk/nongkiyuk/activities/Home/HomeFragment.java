@@ -18,6 +18,7 @@ import android.widget.TextView;
 
 import com.nongkiyuk.nongkiyuk.R;
 import com.nongkiyuk.nongkiyuk.activities.Main.MainActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;

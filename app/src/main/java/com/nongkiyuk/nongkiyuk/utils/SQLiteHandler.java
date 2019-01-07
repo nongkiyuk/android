@@ -24,7 +24,7 @@ public class SQLiteHandler extends SQLiteOpenHelper {
 
     // Login Table Columns names
     private static final String KEY_ID = "id";
-    private static final String KEY_ACCESS_TOKEN = "name";
+    public static final String KEY_ACCESS_TOKEN = "name";
     private static final String KEY_TOKEN_TYPE = "email";
     private static final String KEY_EXPIRES_AT = "created_at";
 
