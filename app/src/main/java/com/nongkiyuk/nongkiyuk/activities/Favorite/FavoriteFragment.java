@@ -103,13 +103,15 @@ public class FavoriteFragment extends Fragment {
                             for(int i = 0; i < data.length(); i++){
                                 JSONObject place = data.getJSONObject(i);
                                 JSONArray images = place.getJSONArray("images");
+                                String imageUrl[] = new String[images.length()];
                                 for(int j = 0; j < images.length(); j++) {
                                     JSONObject image = images.getJSONObject(j);
                                     Log.d("IMAGE " + place.getString("name"), image.getString("url"));
+                                    imageUrl[j] = image.getString("url");
                                 }
                                 JSONObject cover = place.getJSONObject("cover");
                                 places.add(new Place(place.getString("id"), place.getString("name"),
-                                        place.getString("description"), place.getString("latitude"), place.getString("longitude"), cover.getString("url")));
+                                        place.getString("description"), place.getString("latitude"), place.getString("longitude"), cover.getString("url"), imageUrl));
                             }
                             mAdapter = new FavoriteAdapter(getContext(), places);
                             mRecyclerView.swapAdapter(mAdapter, true);
